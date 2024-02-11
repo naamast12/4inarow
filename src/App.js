@@ -4,7 +4,6 @@ import './App.css';
 import Square from "./Square";
 
 
-// eslint-disable-next-line no-undef
 class App extends React.Component {
     state={
         squares : Array.from({length: 42}, (_,index ) => ({player: 0})),
