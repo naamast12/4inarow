@@ -3,6 +3,7 @@ import React from 'react';
 import './App.css';
 import Square from "./Square";
 
+
 // eslint-disable-next-line no-undef
 class App extends React.Component {
     state={
@@ -123,10 +124,12 @@ class App extends React.Component {
        if (this.state.width!==""&&
            this.state.height!==""&&
            this.state.selectedColorPlayer1!==""&&
-           this.state.selectedColorPlayer2!==""&&
-           !this.state.clicked)
-            return true;
+           this.state.selectedColorPlayer2!==""
+       ) {
+           return true;
+       }
        else return false;
+
     }
 
 
@@ -146,7 +149,7 @@ class App extends React.Component {
                     />
                 </div>
                 <div>
-                    Player 1 - Choose color:
+                    Player 1 :
                     <select value={this.state.selectedColorPlayer1} onChange={(event) => this.colorChoose(event, 1)}>
                         <option value="" disabled hidden>Choose color</option>
                         {this.state.colorOptions.map((color, index) => (
@@ -155,7 +158,7 @@ class App extends React.Component {
                     </select>
                 </div>
                 <div>
-                    Player 2 - Choose color:
+                    Player 2 :
                     <select value={this.state.selectedColorPlayer2} onChange={(event) => this.colorChoose(event, 2)}
                             disabled={!this.state.selectedColorPlayer1}>
                         <option value="" disabled hidden>Choose color</option>
@@ -165,8 +168,8 @@ class App extends React.Component {
                         ))}
                     </select>
                 </div>
-                <button onClick={() => this.setState({start: true})}
-                        disabled={!this.startGame()} >
+                <button onClick={() => this.setState({start: true,clicked:true})}
+                        disabled={!this.startGame()||this.state.clicked} >
                     Start
                 </button>
                 {this.state.width !== "" && this.state.height !== "" && this.state.winner === null &&this.state.start ? (
@@ -181,7 +184,6 @@ class App extends React.Component {
                 {this.state.start && (
                 <table>
                     <tbody>
-                    {this.setState({clicked:true})}
                     {Array.from({length: 6}).map((_, rowIndex) => (
                         <tr key={rowIndex}>
                             {this.state.squares.slice(rowIndex * 7, rowIndex * 7 + 7).map((square, colIndex) => (
