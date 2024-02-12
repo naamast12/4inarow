@@ -24,8 +24,6 @@ class App extends React.Component {
         this.setState(prevState => {
             let player1Score = prevState.player1Score;
             let player2Score = prevState.player2Score;
-
-            // מחשב את ניקוד השחקנים ממערך המצב
             this.state.squares.forEach(square => {
                 if (square.player === 1) {
                     player1Score++;
@@ -38,7 +36,6 @@ class App extends React.Component {
 
         });
     };
-
 
 
     turn = () => {
@@ -127,14 +124,11 @@ class App extends React.Component {
             }
         }
         if (this.state.winner) {
-            this.score(); // זימון לפונקציה score ברגע שיש מנצח
+            this.score();
         }
-
-        // אין ניצחון
     }
     reFresh = () => {
         const newSquares= this.state.squares.map(square => ({ player: 0 }));
-        clearTimeout(this.state.turnTimer); // ביטול הטיימר
         this.setState({
             squares: newSquares,
             playerNumber: 1,
@@ -144,9 +138,7 @@ class App extends React.Component {
             selectedColorPlayer1: "",
             selectedColorPlayer2: "",
             start:false,
-            clicked:false,
-            turnTimer: null, // טיימר לכישור תור
-            countdown: 10
+            clicked:false
         });
     };
     startGame=()=> {
@@ -165,7 +157,6 @@ class App extends React.Component {
     render() {
         return (
             <div>
-
                 <tr style={{fontSize: "25px"}}>
                     <td>
                     <div >
@@ -212,11 +203,6 @@ class App extends React.Component {
                     </button>
                     </td>
                 </tr>
-                    {/*{this.state.start && (*/}
-                    {/*    <div>*/}
-                    {/*        Countdown: {this.state.countdown}*/}
-                    {/*    </div>*/}
-                    {/*)}*/}
                     {this.state.width !== "" && this.state.height !== "" && this.state.winner === null && this.state.start ? (
                         <div style={{fontSize: "24px", fontWeight: "bold", color: "darkblue"}}>
                             it's player {this.state.playerNumber} turn
