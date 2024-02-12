@@ -17,24 +17,26 @@ class App extends React.Component {
         colorOptions: [ "red", "yellow", "green","pink","gray","brown","purple","black"],
         clicked:false,
         player1Score:0,
-        player2Score:0
+        player2Score:0,
     }
 
     score = () => {
-        this.setState(prevState => {
-            let player1Score = prevState.player1Score;
-            let player2Score = prevState.player2Score;
-            this.state.squares.forEach(square => {
-                if (square.player === 1) {
-                    player1Score++;
-                } else if (square.player === 2) {
-                    player2Score++;
-                }
+        if (this.state.winner) {
+            this.setState(prevState => {
+                let player1Score = prevState.player1Score;
+                let player2Score = prevState.player2Score;
+                this.state.squares.forEach(square => {
+                    if (square.player === 1) {
+                        player1Score++;
+                    } else if (square.player === 2) {
+                        player2Score++;
+                    }
+                });
+
+                this.setState({player1Score: player1Score, player2Score: player2Score , stopScore:false})
+
             });
-
-            this.setState({player1Score: player1Score , player2Score:player2Score})
-
-        });
+        }
     };
 
 
@@ -123,9 +125,7 @@ class App extends React.Component {
                 }
             }
         }
-        if (this.state.winner) {
-            this.score();
-        }
+
     }
     reFresh = () => {
         const newSquares= this.state.squares.map(square => ({ player: 0 }));
@@ -141,6 +141,8 @@ class App extends React.Component {
             clicked:false
         });
     };
+
+
     startGame=()=> {
        if (this.state.width!==""&&
            this.state.height!==""&&
@@ -227,6 +229,7 @@ class App extends React.Component {
                                             onClick={() => {
                                                 this.setColor(rowIndex * 7 + colIndex);
                                                 this.checkWinner();
+                                                this.score();
                                             }
                                             }
                                         >
