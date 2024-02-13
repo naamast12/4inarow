@@ -2,7 +2,7 @@ import logo from './logo.svg';
 import React from 'react';
 import './App.css';
 import Square from "./Square";
-
+import square from "./Square";
 
 class App extends React.Component {
     state={
@@ -17,11 +17,10 @@ class App extends React.Component {
         colorOptions: [ "red", "yellow", "green","pink","gray","brown","purple","black"],
         clicked:false,
         player1Score:0,
-        player2Score:0,
+        player2Score:0
     }
 
     score = () => {
-        if (this.state.winner) {
             this.setState(prevState => {
                 let player1Score = prevState.player1Score;
                 let player2Score = prevState.player2Score;
@@ -36,8 +35,9 @@ class App extends React.Component {
                 this.setState({player1Score: player1Score, player2Score: player2Score , stopScore:false})
 
             });
-        }
     };
+
+
 
 
     turn = () => {
@@ -46,6 +46,18 @@ class App extends React.Component {
 
 
     }
+    // onChangeWidth = (event) => {
+    //     this.setState({
+    //         width: parseInt(event.target.value)
+    //     });
+    // };
+    //
+    // onChangeHeight = (event) => {
+    //     this.setState({
+    //         height: parseInt(event.target.value)
+    //     });
+    // };
+
     onChangeWidth = (event) => {
         this.setState({
             width:event.target.value
@@ -86,6 +98,7 @@ class App extends React.Component {
                     squares[row * 7 + col + 2].player === player &&
                     squares[row * 7 + col + 3].player === player) {
                     this.state.winner = player;
+                    this.score();
                 }
             }
         }
@@ -98,6 +111,7 @@ class App extends React.Component {
                     squares[(row + 2) * 7 + col].player === player &&
                     squares[(row + 3) * 7 + col].player === player) {
                     this.state.winner = player;
+                    this.score();
                 }
             }
         }
@@ -110,6 +124,7 @@ class App extends React.Component {
                     squares[(row + 2) * 7 + col + 2].player === player &&
                     squares[(row + 3) * 7 + col + 3].player === player) {
                     this.state.winner = player;
+                    this.score();
                 }
             }
         }
@@ -122,6 +137,7 @@ class App extends React.Component {
                     squares[(row + 2) * 7 + col - 2].player === player &&
                     squares[(row + 3) * 7 + col - 3].player === player) {
                     this.state.winner = player;
+                    this.score();
                 }
             }
         }
@@ -229,7 +245,6 @@ class App extends React.Component {
                                             onClick={() => {
                                                 this.setColor(rowIndex * 7 + colIndex);
                                                 this.checkWinner();
-                                                this.score();
                                             }
                                             }
                                         >
