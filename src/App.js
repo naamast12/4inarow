@@ -152,7 +152,6 @@ class App extends React.Component {
         });
     };
 
-
     startGame=()=> {
        if (this.state.width!==""&&
            this.state.height!==""&&
@@ -162,7 +161,6 @@ class App extends React.Component {
            return true;
        }
        else return false;
-
     }
 
 
@@ -270,8 +268,7 @@ class App extends React.Component {
                         </button>
                     ) : null}
             </div>
-    );
+        );
     }
-    }
-
-    export default App;
+}
+export default App;
