@@ -1,8 +1,6 @@
-import logo from './logo.svg';
 import React from 'react';
 import './App.css';
 import Square from "./Square";
-import square from "./Square";
 
 class App extends React.Component {
     state={
@@ -31,13 +29,9 @@ class App extends React.Component {
                         player2Score++;
                     }
                 });
-
                 this.setState({player1Score: player1Score, player2Score: player2Score , stopScore:false})
-
             });
     };
-
-
 
 
     turn = () => {
@@ -97,7 +91,7 @@ class App extends React.Component {
                     squares[row * 7 + col + 1].player === player &&
                     squares[row * 7 + col + 2].player === player &&
                     squares[row * 7 + col + 3].player === player) {
-                    this.state.winner = player;
+                    this.setState({winner:player});
                     this.score();
                 }
             }
@@ -110,7 +104,7 @@ class App extends React.Component {
                     squares[(row + 1) * 7 + col].player === player &&
                     squares[(row + 2) * 7 + col].player === player &&
                     squares[(row + 3) * 7 + col].player === player) {
-                    this.state.winner = player;
+                    this.setState({winner:player});
                     this.score();
                 }
             }
@@ -123,7 +117,7 @@ class App extends React.Component {
                     squares[(row + 1) * 7 + col + 1].player === player &&
                     squares[(row + 2) * 7 + col + 2].player === player &&
                     squares[(row + 3) * 7 + col + 3].player === player) {
-                    this.state.winner = player;
+                    this.setState({winner:player});
                     this.score();
                 }
             }
@@ -136,7 +130,7 @@ class App extends React.Component {
                     squares[(row + 1) * 7 + col - 1].player === player &&
                     squares[(row + 2) * 7 + col - 2].player === player &&
                     squares[(row + 3) * 7 + col - 3].player === player) {
-                    this.state.winner = player;
+                    this.setState({winner:player});
                     this.score();
                 }
             }
@@ -175,52 +169,54 @@ class App extends React.Component {
     render() {
         return (
             <div>
-                <tr style={{fontSize: "25px"}}>
-                    <td>
-                    <div >
-                        board width:
-                        <input onChange={this.onChangeWidth} value={this.state.width}
-                               disabled={this.state.start}
-                        />
-                    </div>
-                    <div >
-                        board height:
-                        <input onChange={this.onChangeHeight} value={this.state.height}
-                               disabled={this.state.start}
-                        />
-                    </div>
-                    </td>
-                    <td>
-                    <div>
-                        Player 1 :
-                        <select value={this.state.selectedColorPlayer1}
-                                onChange={(event) => this.colorChoose(event, 1)}>
-                            <option value="" disabled hidden>Choose color</option>
-                            {this.state.colorOptions.map((color, index) => (
-                                <option key={index} value={color}
-                                        disabled={color === this.state.selectedColorPlayer2}>{color}</option>
-                            ))}
-                        </select>
-                    </div>
-                    <div>
-                        Player 2 :
-                        <select value={this.state.selectedColorPlayer2} onChange={(event) => this.colorChoose(event, 2)}
-                                disabled={!this.state.selectedColorPlayer1}>
-                            <option value="" disabled hidden>Choose color</option>
-                            {this.state.colorOptions.map((color, index) => (
-                                <option key={index} value={color}
-                                        disabled={color === this.state.selectedColorPlayer1}>{color}</option>
-                            ))}
-                        </select>
-                    </div>
-                    </td>
-                    <td>
-                    <button onClick={() => this.setState({start: true, clicked: true})}
-                            disabled={!this.startGame() || this.state.clicked}>
-                        Start
-                    </button>
-                    </td>
-                </tr>
+                <table>
+                    <tr style={{fontSize: "25px"}}>
+                        <td>
+                            <div >
+                                board width:
+                                <input onChange={this.onChangeWidth} value={this.state.width}
+                                       disabled={this.state.start}
+                                />
+                            </div>
+                            <div >
+                                board height:
+                                <input onChange={this.onChangeHeight} value={this.state.height}
+                                       disabled={this.state.start}
+                                />
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                Player 1 :
+                                <select value={this.state.selectedColorPlayer1}
+                                        onChange={(event) => this.colorChoose(event, 1)}>
+                                    <option value="" disabled hidden>Choose color</option>
+                                    {this.state.colorOptions.map((color, index) => (
+                                        <option key={index} value={color}
+                                                disabled={color === this.state.selectedColorPlayer2}>{color}</option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div>
+                                Player 2 :
+                                <select value={this.state.selectedColorPlayer2} onChange={(event) => this.colorChoose(event, 2)}
+                                        disabled={!this.state.selectedColorPlayer1}>
+                                    <option value="" disabled hidden>Choose color</option>
+                                    {this.state.colorOptions.map((color, index) => (
+                                        <option key={index} value={color}
+                                                disabled={color === this.state.selectedColorPlayer1}>{color}</option>
+                                    ))}
+                                </select>
+                            </div>
+                        </td>
+                        <td>
+                            <button onClick={() => this.setState({start: true, clicked: true})}
+                                    disabled={!this.startGame() || this.state.clicked}>
+                                Start
+                            </button>
+                        </td>
+                    </tr>
+                </table>
                     {this.state.width !== "" && this.state.height !== "" && this.state.winner === null && this.state.start ? (
                         <div style={{fontSize: "24px", fontWeight: "bold", color: "darkblue"}}>
                             it's player {this.state.playerNumber} turn
