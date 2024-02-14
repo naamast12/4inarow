@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import Square from "./Square";
+import square from "./Square";
 
 class App extends React.Component {
     state={
@@ -8,8 +9,8 @@ class App extends React.Component {
         playerNumber : 1,
         start: false,
         winner : null,
-        width:"",
-        height:"",
+        width:"375",
+        height:"375",
         selectedColorPlayer1: "",
         selectedColorPlayer2: "",
         colorOptions: [ "red", "yellow", "green","pink","gray","brown","purple","black"],
@@ -29,49 +30,37 @@ class App extends React.Component {
                         player2Score++;
                     }
                 });
-                this.setState({player1Score: player1Score, player2Score: player2Score , stopScore:false})
+                this.setState({player1Score: player1Score, player2Score: player2Score , stopScore:false});
             });
     };
-
 
     turn = () => {
         const newPlayerNumber = this.state.playerNumber === 1 ? 2 : 1;
         this.setState({ playerNumber: newPlayerNumber });
-
-
-    }
-    // onChangeWidth = (event) => {
-    //     this.setState({
-    //         width: parseInt(event.target.value)
-    //     });
-    // };
-    //
-    // onChangeHeight = (event) => {
-    //     this.setState({
-    //         height: parseInt(event.target.value)
-    //     });
-    // };
-
+    };
     onChangeWidth = (event) => {
         this.setState({
-            width:event.target.value
-        })
-    }
+            width: event.target.value
+        });
+    };
+
     onChangeHeight = (event) => {
         this.setState({
-            height:event.target.value
-        })
-    }
+            height: event.target.value
+        });
+    };
 
     setColor = (index) =>{
-        if ((index>=35||(index<35&&this.state.squares[index+7].player!==0)) &&this.state.squares[index].player===0&&this.state.winner===null) {
+        if ((index>=35|| (index<35&& this.state.squares[index+7].player!==0)) &&
+            this.state.squares[index].player===0&&
+            this.state.winner===null)
+        {
             this.state.squares[index].player = this.state.playerNumber;
             this.turn();
         }
-    }
+    };
     colorChoose = (event, player) => {
         const selectedColor = event.target.value;
-
         this.setState(prevState => {
             if (player === 1) {
                 return { selectedColorPlayer1: selectedColor };
@@ -82,6 +71,7 @@ class App extends React.Component {
     };
 
     checkWinner = () => {
+        let toDo=false;
         const squares = this.state.squares;
         const player = this.state.playerNumber
         // אופקית
@@ -91,12 +81,10 @@ class App extends React.Component {
                     squares[row * 7 + col + 1].player === player &&
                     squares[row * 7 + col + 2].player === player &&
                     squares[row * 7 + col + 3].player === player) {
-                    this.setState({winner:player});
-                    this.score();
+                    toDo =true;
                 }
             }
         }
-
         // אנכית
         for (let col = 0; col < 7; col++) {
             for (let row = 0; row < 3; row++) {
@@ -104,12 +92,10 @@ class App extends React.Component {
                     squares[(row + 1) * 7 + col].player === player &&
                     squares[(row + 2) * 7 + col].player === player &&
                     squares[(row + 3) * 7 + col].player === player) {
-                    this.setState({winner:player});
-                    this.score();
+                    toDo=true;
                 }
             }
         }
-
         // אלכסונית משמאל למעלה לימין למטה
         for (let row = 0; row < 3; row++) {
             for (let col = 0; col < 4; col++) {
@@ -117,12 +103,10 @@ class App extends React.Component {
                     squares[(row + 1) * 7 + col + 1].player === player &&
                     squares[(row + 2) * 7 + col + 2].player === player &&
                     squares[(row + 3) * 7 + col + 3].player === player) {
-                    this.setState({winner:player});
-                    this.score();
+                    toDo=true;
                 }
             }
         }
-
         // אלכסונית מימין למעלה לשמאל למטה
         for (let row = 0; row < 3; row++) {
             for (let col = 3; col < 7; col++) {
@@ -130,28 +114,29 @@ class App extends React.Component {
                     squares[(row + 1) * 7 + col - 1].player === player &&
                     squares[(row + 2) * 7 + col - 2].player === player &&
                     squares[(row + 3) * 7 + col - 3].player === player) {
-                    this.setState({winner:player});
-                    this.score();
+                    toDo=true;
                 }
             }
         }
-
-    }
+        if (toDo){
+            this.setState({winner:player});
+            this.score();
+        }
+    };
     reFresh = () => {
         const newSquares= this.state.squares.map(square => ({ player: 0 }));
         this.setState({
             squares: newSquares,
             playerNumber: 1,
             winner: null,
-            width :"",
-            height:"",
+            width :"375",
+            height:"375",
             selectedColorPlayer1: "",
             selectedColorPlayer2: "",
             start:false,
             clicked:false
         });
     };
-
     startGame=()=> {
        if (this.state.width!==""&&
            this.state.height!==""&&
@@ -162,8 +147,6 @@ class App extends React.Component {
        }
        else return false;
     }
-
-
     render() {
         return (
             <div>
@@ -172,13 +155,15 @@ class App extends React.Component {
                         <td>
                             <div >
                                 board width:
-                                <input onChange={this.onChangeWidth} value={this.state.width}
+                                <input type={"number"}
+                                       onChange={this.onChangeWidth} value={this.state.width}
                                        disabled={this.state.start}
                                 />
                             </div>
                             <div >
                                 board height:
-                                <input onChange={this.onChangeHeight} value={this.state.height}
+                                <input type={"number"}
+                                       onChange={this.onChangeHeight} value={this.state.height}
                                        disabled={this.state.start}
                                 />
                             </div>
@@ -208,14 +193,18 @@ class App extends React.Component {
                             </div>
                         </td>
                         <td>
-                            <button onClick={() => this.setState({start: true, clicked: true})}
-                                    disabled={!this.startGame() || this.state.clicked}>
+                            <button
+                                onClick={() => this.setState({start: true, clicked: true})}
+                                disabled={!this.startGame() || this.state.clicked}>
                                 Start
                             </button>
                         </td>
                     </tr>
                 </table>
-                    {this.state.width !== "" && this.state.height !== "" && this.state.winner === null && this.state.start ? (
+                    {this.state.width !== "" &&
+                    this.state.height !== "" &&
+                    this.state.winner === null &&
+                    this.state.start ? (
                         <div style={{fontSize: "24px", fontWeight: "bold", color: "darkblue"}}>
                             it's player {this.state.playerNumber} turn
                         </div>
